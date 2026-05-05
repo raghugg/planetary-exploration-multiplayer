@@ -1,32 +1,58 @@
+interface Planet {
+    name: string;
+    threshold: number;
+    filter: string;
+    image: string;
+}
+
+interface StoreItem {
+    name: string;
+    image: string;
+    defaultPrice: number;
+    price: number;
+    quantity: number;
+    rate: number;
+    priceIncrease: number;
+    id: number;
+}
+
+interface ClickUpgrade {
+    name: string;
+    image: string;
+    currentUpgrade: number;
+    prices: number[];
+    power: number[];
+}
+
 // Default counter 0 if counter not found
-var counter = localStorage.getItem('counter') ? parseInt(localStorage.getItem('counter'), 10) : 0;
+var counter: number = localStorage.getItem('counter') ? parseInt(localStorage.getItem('counter')!, 10) : 0;
 
 // Lifetime counter that's used for Earth graphics (is not changed when users buy items)
-var lifetimeCounter = localStorage.getItem('lifetimeCounter') ? parseInt(localStorage.getItem('lifetimeCounter'), 10) : counter;
+var lifetimeCounter: number = localStorage.getItem('lifetimeCounter') ? parseInt(localStorage.getItem('lifetimeCounter')!, 10) : counter;
 
 // Resetting both counters for testing purposes
 /* counter = 0;
 lifetimeCounter = 0; */
 
-const counterDisplay = document.getElementById('counterDisplay');
-const lifetimeDisplay = document.getElementById('lifetimeDisplay');
-const planetHealthDisplay = document.getElementById('planetHealthDisplay');
+const counterDisplay = document.getElementById('counterDisplay') as HTMLElement;
+const lifetimeDisplay = document.getElementById('lifetimeDisplay') as HTMLElement;
+const planetHealthDisplay = document.getElementById('planetHealthDisplay') as HTMLElement;
 
 counterDisplay.textContent = counter.toFixed(2);
 lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
 
-const counterButton = document.getElementById('counterButton');
-const planets = [
+const counterButton = document.getElementById('counterButton') as HTMLImageElement;
+const planets: Planet[] = [
     { name: "Earth", threshold: 0, filter: "", image: "images/earthImages/healthyEarth.png" },
     { name: "GloobGlorb", threshold: 50000, filter: "hue-rotate(90deg)", image: "images/earthImages/healthyEarth.png" },
     { name: "BlingoScrunge", threshold: 100000, filter: "hue-rotate(180deg)", image: "images/earthImages/healthyEarth.png" },
     { name: "Black Hole", threshold: 1000000, filter: "brightness(0)", image: "images/earthImages/healthyEarth.png" }
 ];
-let currentPlanetIndex = localStorage.getItem('currentPlanetIndex') 
-    ? parseInt(localStorage.getItem('currentPlanetIndex')) 
+let currentPlanetIndex: number = localStorage.getItem('currentPlanetIndex')
+    ? parseInt(localStorage.getItem('currentPlanetIndex')!)
     : 0;
 
-function updatePlanetHealth() {
+function updatePlanetHealth(): void {
     const current = planets[currentPlanetIndex];
     const nextPlanet = planets[currentPlanetIndex + 1];
 
@@ -49,7 +75,7 @@ function updatePlanetHealth() {
 
     counterButton.style.filter = current.filter;
 
-    planetHealthDisplay.textContent = (planets[currentPlanetIndex+1].threshold.toFixed(2) - lifetimeCounter.toFixed(2)).toFixed(2);
+    planetHealthDisplay.textContent = (planets[currentPlanetIndex+1].threshold - lifetimeCounter).toFixed(2);
 }
 
 updatePlanetHealth();
@@ -60,40 +86,40 @@ counterButton.addEventListener('click', () => {
     lifetimeCounter+= clickUpgrade[0].power[clickUpgrade[0].currentUpgrade];
     counterDisplay.textContent = counter.toFixed(2);
     lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
-    
-    localStorage.setItem('counter', counter);
-    localStorage.setItem('lifetimeCounter', lifetimeCounter);
+
+    localStorage.setItem('counter', String(counter));
+    localStorage.setItem('lifetimeCounter', String(lifetimeCounter));
 
     updatePlanetHealth();
 });
 
-const resetButton = document.getElementById('resetItemsButton');
+const resetButton = document.getElementById('resetItemsButton') as HTMLElement;
 resetButton.addEventListener('click', () => {
 
     clickUpgrade[0].currentUpgrade = 0;
-    localStorage.setItem('clickUpgrade', clickUpgrade[0].currentUpgrade);
+    localStorage.setItem('clickUpgrade', String(clickUpgrade[0].currentUpgrade));
 
     storeItems.forEach(item => {
         item.price = item.defaultPrice;
         item.quantity = 0;
-        localStorage.setItem(`${item.id}Price`, item.price);
-        localStorage.setItem(`${item.id}Quantity`, item.quantity);
+        localStorage.setItem(`${item.id}Price`, String(item.price));
+        localStorage.setItem(`${item.id}Quantity`, String(item.quantity));
     });
     renderStore(); // Re-render the store to update the display
 });
 
-const resetAllButton = document.getElementById('resetAllButton');
+const resetAllButton = document.getElementById('resetAllButton') as HTMLElement;
 resetAllButton.addEventListener('click', () => {
     counter = 0;
     lifetimeCounter = 0;
-    localStorage.setItem('counter', counter);
-    localStorage.setItem('lifetimeCounter', lifetimeCounter);
+    localStorage.setItem('counter', String(counter));
+    localStorage.setItem('lifetimeCounter', String(lifetimeCounter));
     counterDisplay.textContent = counter.toFixed(2);
     lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
     updatePlanetHealth();
 });
 
-function autoGeneratePoints() {
+function autoGeneratePoints(): void {
     let totalRate = 0;
     storeItems.forEach((item, index) => {
         totalRate += item.quantity * item.rate;
@@ -105,8 +131,8 @@ function autoGeneratePoints() {
     counterDisplay.textContent = counter.toFixed(2);
     lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
 
-    localStorage.setItem('counter', counter);
-    localStorage.setItem('lifetimeCounter', lifetimeCounter);
+    localStorage.setItem('counter', String(counter));
+    localStorage.setItem('lifetimeCounter', String(lifetimeCounter));
 
     updatePlanetHealth();
 }
@@ -116,14 +142,14 @@ setInterval(autoGeneratePoints, 100); // Auto-generate points every second
 //updateItemDisplays();
 
 // Overlay Stuff, particularly the tutorial overlay
-const tutorialOverlay = document.getElementById('tutorialOverlay');
-const openTutorial = document.getElementById('openTutorial');
+const tutorialOverlay = document.getElementById('tutorialOverlay') as HTMLElement;
+const openTutorial = document.getElementById('openTutorial') as HTMLElement;
 
 // Open and close the tutorial overlay
-function openOverlay() {
+function openOverlay(): void {
     tutorialOverlay.style.display = 'block';
 }
-function closeOverlay() {
+function closeOverlay(): void {
     tutorialOverlay.style.display = 'none';
 }
 
@@ -139,8 +165,8 @@ openTutorial.addEventListener('click', openOverlay);
 tutorialOverlay.addEventListener('click', closeOverlay);
 
 // Function to toggle the shop
-function toggle() {
-    const shop = document.getElementById('storeContainer');
+function toggle(): void {
+    const shop = document.getElementById('storeContainer') as HTMLElement;
     if (shop.style.display === 'none' || shop.style.display === '') {
         shop.style.display = 'flex';
     } else {
@@ -150,13 +176,13 @@ function toggle() {
 
 // New Store Code :(
 
-let storeItems = [
+let storeItems: StoreItem[] = [
     {
         name: "Throw Meteors",
         image: "images/shopImages/meteor.png",
         defaultPrice: 15,
-        price: localStorage.getItem('0Price') ? parseFloat(localStorage.getItem('0Price')) : 15,
-        quantity: localStorage.getItem('0Quantity') ? parseInt(localStorage.getItem('0Quantity'), 10) : 0,
+        price: localStorage.getItem('0Price') ? parseFloat(localStorage.getItem('0Price')!) : 15,
+        quantity: localStorage.getItem('0Quantity') ? parseInt(localStorage.getItem('0Quantity')!, 10) : 0,
         rate: 1,
         priceIncrease: 1.15,
         id: 0
@@ -165,8 +191,8 @@ let storeItems = [
         name: "Cut Trees",
         image: "images/shopImages/tree.png",
         defaultPrice: 100,
-        price: localStorage.getItem('1Price') ? parseFloat(localStorage.getItem('1Price')) : 100,
-        quantity: localStorage.getItem('1Quantity') ? parseInt(localStorage.getItem('1Quantity'), 10) : 0,
+        price: localStorage.getItem('1Price') ? parseFloat(localStorage.getItem('1Price')!) : 100,
+        quantity: localStorage.getItem('1Quantity') ? parseInt(localStorage.getItem('1Quantity')!, 10) : 0,
         rate: 4,
         priceIncrease: 1.15,
         id: 1
@@ -175,8 +201,8 @@ let storeItems = [
         name: "Damage The Ozone",
         image: "images/shopImages/hairspray.png",
         defaultPrice: 1100,
-        price: localStorage.getItem('2Price') ? parseFloat(localStorage.getItem('2Price')) : 1100,
-        quantity: localStorage.getItem('2Quantity') ? parseInt(localStorage.getItem('2Quantity'), 10) : 0,
+        price: localStorage.getItem('2Price') ? parseFloat(localStorage.getItem('2Price')!) : 1100,
+        quantity: localStorage.getItem('2Quantity') ? parseInt(localStorage.getItem('2Quantity')!, 10) : 0,
         rate: 16,
         priceIncrease: 1.15,
         id: 2
@@ -185,8 +211,8 @@ let storeItems = [
         name: "Dump Litter",
         image: "images/shopImages/litterItem.png",
         defaultPrice: 12000,
-        price: localStorage.getItem('3Price') ? parseFloat(localStorage.getItem('3Price')) : 12000,
-        quantity: localStorage.getItem('3Quantity') ? parseInt(localStorage.getItem('3Quantity'), 10) : 0,
+        price: localStorage.getItem('3Price') ? parseFloat(localStorage.getItem('3Price')!) : 12000,
+        quantity: localStorage.getItem('3Quantity') ? parseInt(localStorage.getItem('3Quantity')!, 10) : 0,
         rate: 64,
         priceIncrease: 1.15,
         id: 3
@@ -195,8 +221,8 @@ let storeItems = [
         name: "Throw Plastic Straws Into The Ocean",
         image: "images/shopImages/straw.png",
         defaultPrice: 130000,
-        price: localStorage.getItem('4Price') ? parseFloat(localStorage.getItem('4Price')) : 130000,
-        quantity: localStorage.getItem('4Quantity') ? parseInt(localStorage.getItem('4Quantity'), 10) : 0,
+        price: localStorage.getItem('4Price') ? parseFloat(localStorage.getItem('4Price')!) : 130000,
+        quantity: localStorage.getItem('4Quantity') ? parseInt(localStorage.getItem('4Quantity')!, 10) : 0,
         rate: 275,
         priceIncrease: 1.15,
         id: 4
@@ -205,27 +231,27 @@ let storeItems = [
         name: "Planet Evaporator 9000 [DEBUG ONLY]",
         image: "images/shopImages/meteor.png",
         defaultPrice: 10,
-        price: localStorage.getItem('5Price') ? parseFloat(localStorage.getItem('5Price')) : 10,
-        quantity: localStorage.getItem('5Quantity') ? parseInt(localStorage.getItem('5Quantity'), 10) : 0,
+        price: localStorage.getItem('5Price') ? parseFloat(localStorage.getItem('5Price')!) : 10,
+        quantity: localStorage.getItem('5Quantity') ? parseInt(localStorage.getItem('5Quantity')!, 10) : 0,
         rate: 1000,
         priceIncrease: 1,
         id: 5
     }
 ];
 
-let clickUpgrade = [
+let clickUpgrade: ClickUpgrade[] = [
     {
         name: "Increase Click Power",
         image: "images/shopImages/mouse.png",
-        currentUpgrade: localStorage.getItem('clickUpgrade') ? parseFloat(localStorage.getItem('clickUpgrade')) : 0,
+        currentUpgrade: localStorage.getItem('clickUpgrade') ? parseFloat(localStorage.getItem('clickUpgrade')!) : 0,
         prices: [100, 500, 10000, 100000],
         power: [1, 2, 4, 8]
     }
 ]
 
 // Function to render the store items
-function renderStore() {
-    const storeItemsContainer = document.getElementById('storeItemsContainer');
+function renderStore(): void {
+    const storeItemsContainer = document.getElementById('storeItemsContainer') as HTMLElement;
     storeItemsContainer.innerHTML = '';
 
     const clickPower = document.createElement('div');
@@ -250,7 +276,7 @@ function renderStore() {
     `;
     }
     storeItemsContainer.appendChild(clickPower);
-    
+
     storeItems.forEach((item, index) => {
         const storeItem = document.createElement('div');
         storeItem.className = 'panelItem';
@@ -268,7 +294,7 @@ function renderStore() {
 }
 
 // Function to handle item purchase
-function purchaseItem(index) {
+function purchaseItem(index: number): void {
     const item = storeItems[index];
     if (counter >= item.price) {
         counter -= item.price;
@@ -276,36 +302,36 @@ function purchaseItem(index) {
         item.price = Math.ceil(item.price * item.priceIncrease);
 
         counterDisplay.textContent = counter.toFixed(2);
-        localStorage.setItem('counter', counter);
-        localStorage.setItem(`${item.id}Price`, item.price);
-        localStorage.setItem(`${item.id}Quantity`, item.quantity);
+        localStorage.setItem('counter', String(counter));
+        localStorage.setItem(`${item.id}Price`, String(item.price));
+        localStorage.setItem(`${item.id}Quantity`, String(item.quantity));
         renderStore(); // Re-render the store to update the display
     }
 }
 
-function purchaseClickUpgrade() {
+function purchaseClickUpgrade(): void {
     if (clickUpgrade[0].currentUpgrade < clickUpgrade[0].prices.length-1) {
         if (counter >= clickUpgrade[0].prices[clickUpgrade[0].currentUpgrade]) {
             counter -= clickUpgrade[0].prices[clickUpgrade[0].currentUpgrade];
             clickUpgrade[0].currentUpgrade++;
 
             counterDisplay.textContent = counter.toFixed(2);
-            localStorage.setItem('counter', counter);
-            localStorage.setItem('clickUpgrade', clickUpgrade[0].currentUpgrade);
+            localStorage.setItem('counter', String(counter));
+            localStorage.setItem('clickUpgrade', String(clickUpgrade[0].currentUpgrade));
             renderStore(); // Re-render the store to update the display
         }
     }
 }
-            
 
-document.addEventListener('DOMContentLoaded', (event) => {
+
+document.addEventListener('DOMContentLoaded', (event: Event) => {
     // Initial render of the store items
     renderStore();
 });
 
 //start planet code
-function renderPlanetPanel() {
-    const container = document.getElementById('planetListContainer');
+function renderPlanetPanel(): void {
+    const container = document.getElementById('planetListContainer') as HTMLElement;
     container.innerHTML = '';
 
     planets.forEach((planet, index) => {
@@ -328,7 +354,7 @@ function renderPlanetPanel() {
             <button class="general-button" role="button">Progress to ${planet.name}</button>
         `;
 
-        const button = planetItem.querySelector('button');
+        const button = planetItem.querySelector('button') as HTMLButtonElement;
         button.addEventListener('click', () => {
             if (!isNext) {
                 alert("You can only progress to the next planet in order.");
@@ -338,14 +364,14 @@ function renderPlanetPanel() {
             if (counter < planet.threshold) {
                 alert(`You need ${planet.threshold} clicks to unlock this planet.`);
                 return;
-            }            
+            }
 
             currentPlanetIndex = index;
             counter = 0;
             lifetimeCounter = 0;
-            localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
-            localStorage.setItem('counter', counter);
-            localStorage.setItem('lifetimeCounter', lifetimeCounter);
+            localStorage.setItem('currentPlanetIndex', String(currentPlanetIndex));
+            localStorage.setItem('counter', String(counter));
+            localStorage.setItem('lifetimeCounter', String(lifetimeCounter));
             counterDisplay.textContent = counter.toFixed(2);
             lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
 
@@ -357,8 +383,8 @@ function renderPlanetPanel() {
     });
 }
 
-function togglePlanetPanel() {
-    const panel = document.getElementById('planetContainer');
+function togglePlanetPanel(): void {
+    const panel = document.getElementById('planetContainer') as HTMLElement;
     if (panel.style.display === 'none' || panel.style.display === '') {
         panel.style.display = 'flex';
     } else {
@@ -366,20 +392,20 @@ function togglePlanetPanel() {
     }
 }
 
-function updatePlanetImage() {
+function updatePlanetImage(): void {
     const current = planets[currentPlanetIndex];
     counterButton.src = current.image;
     counterButton.style.filter = current.filter;
 }
 
-document.getElementById('resetProgressionButton').addEventListener('click', () => {
+(document.getElementById('resetProgressionButton') as HTMLElement).addEventListener('click', () => {
     currentPlanetIndex = 0;
     counter = 0;
     lifetimeCounter = 0;
 
-    localStorage.setItem('currentPlanetIndex', currentPlanetIndex);
-    localStorage.setItem('counter', counter);
-    localStorage.setItem('lifetimeCounter', lifetimeCounter);
+    localStorage.setItem('currentPlanetIndex', String(currentPlanetIndex));
+    localStorage.setItem('counter', String(counter));
+    localStorage.setItem('lifetimeCounter', String(lifetimeCounter));
 
     counterDisplay.textContent = counter.toFixed(2);
     lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
@@ -388,36 +414,37 @@ document.getElementById('resetProgressionButton').addEventListener('click', () =
 });
 //end planet code
 
-const inputSlider = document.getElementById("myRange");
-const volumeIcon = document.getElementById("volumeIcon");
+const inputSlider = document.getElementById("myRange") as HTMLInputElement;
+const volumeIcon = document.getElementById("volumeIcon") as HTMLImageElement;
 volumeIcon.style.pointerEvents = 'none';
-const audio = document.getElementById("bgMusic");
+const audio = document.getElementById("bgMusic") as HTMLAudioElement;
 
 // Upon changing the slider, it changes the icon and volume
-inputSlider.addEventListener("input",(event => {
-    if(event.target.value == 0){
+inputSlider.addEventListener("input", (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if(Number(target.value) == 0){
         volumeIcon.src="images/volumeImages/volume1.png";
     }
-    else if(event.target.value <= 33){
+    else if(Number(target.value) <= 33){
         volumeIcon.src="images/volumeImages/volume2.png";
     }
-    else if(event.target.value <= 66){
+    else if(Number(target.value) <= 66){
         volumeIcon.src="images/volumeImages/volume3.png";
     }
-    else if(event.target.value <= 100){
+    else if(Number(target.value) <= 100){
         volumeIcon.src="images/volumeImages/volume4.png";
     }
 
     // Range of [0, 100] * .01 to get a value from [0, 1.0]
-    audio.volume = (event.target.value * .01).toFixed(1);
-}))
+    audio.volume = parseFloat((Number(target.value) * .01).toFixed(1));
+});
 
 // Due to chrome restrictions, you cannot autoplay sound immediately after loading the page
 // and you will need something interactive to play the music.
 // Whenever the user clicks anywhere, it autoplays the music in a loop.
 document.addEventListener('click', musicPlay);
-function musicPlay() {
-    document.getElementById('bgMusic').play();
+function musicPlay(): void {
+    (document.getElementById('bgMusic') as HTMLAudioElement).play();
     document.removeEventListener('click', musicPlay);
 }
 
@@ -427,11 +454,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePlanetImage();
 });
 
-let previousCounter = lifetimeCounter; // To track the counter value from the previous second
-const cpsDisplay = document.getElementById('cpsDisplay');
+let previousCounter: number = lifetimeCounter; // To track the counter value from the previous second
+const cpsDisplay = document.getElementById('cpsDisplay') as HTMLElement;
 
 // Function to calculate and update clicks per second
-function updateCPS() {
+function updateCPS(): void {
     const cps = lifetimeCounter - previousCounter; // Calculate CPS as the difference in counter
     cpsDisplay.textContent = cps.toFixed(2); // Update the CPS display
     previousCounter = lifetimeCounter; // Update the previous counter value
@@ -439,25 +466,25 @@ function updateCPS() {
 // Update CPS every second
 setInterval(updateCPS, 1000);
 
-var musicVolume = 50;
-function toggleMute(){
-    if(inputSlider.value != 0){
+var musicVolume: number = 50;
+function toggleMute(): void {
+    if(Number(inputSlider.value) != 0){
         volumeIcon.src="images/volumeImages/volume1.png";
-        musicVolume = inputSlider.value;
-        inputSlider.value = 0;
+        musicVolume = Number(inputSlider.value);
+        inputSlider.value = '0';
     }
     else{
         if(musicVolume <= 33){
             volumeIcon.src="images/volumeImages/volume2.png";
-            inputSlider.value = musicVolume;
+            inputSlider.value = String(musicVolume);
         }
         else if(musicVolume <= 66){
             volumeIcon.src="images/volumeImages/volume3.png";
-            inputSlider.value = musicVolume;
+            inputSlider.value = String(musicVolume);
         }
         else if(musicVolume <= 100){
             volumeIcon.src="images/volumeImages/volume4.png";
-            inputSlider.value = musicVolume;
+            inputSlider.value = String(musicVolume);
         }
     }
 }
