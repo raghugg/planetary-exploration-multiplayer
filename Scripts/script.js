@@ -17,10 +17,10 @@ lifetimeDisplay.textContent = lifetimeCounter.toFixed(2);
 
 const counterButton = document.getElementById('counterButton');
 const planets = [
-    { name: "Earth", threshold: 0, filter: "", image: "../images/earthImages/healthyEarth.png" },
-    { name: "GloobGlorb", threshold: 50000, filter: "hue-rotate(90deg)", image: "../images/earthImages/healthyEarth.png" },
-    { name: "BlingoScrunge", threshold: 100000, filter: "hue-rotate(180deg)", image: "../images/earthImages/healthyEarth.png" },
-    { name: "Black Hole", threshold: 1000000, filter: "brightness(0)", image: "../images/earthImages/healthyEarth.png" }
+    { name: "Earth", threshold: 0, filter: "", image: "images/earthImages/healthyEarth.png" },
+    { name: "GloobGlorb", threshold: 50000, filter: "hue-rotate(90deg)", image: "images/earthImages/healthyEarth.png" },
+    { name: "BlingoScrunge", threshold: 100000, filter: "hue-rotate(180deg)", image: "images/earthImages/healthyEarth.png" },
+    { name: "Black Hole", threshold: 1000000, filter: "brightness(0)", image: "images/earthImages/healthyEarth.png" }
 ];
 let currentPlanetIndex = localStorage.getItem('currentPlanetIndex') 
     ? parseInt(localStorage.getItem('currentPlanetIndex')) 
@@ -32,7 +32,7 @@ function updatePlanetHealth() {
 
     if (!nextPlanet) {
         // Last planet stays healthy forever
-        counterButton.src = "../images/earthImages/healthyEarth.png";
+        counterButton.src = "images/earthImages/healthyEarth.png";
         counterButton.style.filter = current.filter;
         planetHealthDisplay.textContent = "???";
         return;
@@ -40,11 +40,11 @@ function updatePlanetHealth() {
 
     const threshold = nextPlanet.threshold;
     if (lifetimeCounter < threshold / 2) {
-        counterButton.src = "../images/earthImages/healthyEarth.png";
+        counterButton.src = "images/earthImages/healthyEarth.png";
     } else if (lifetimeCounter < threshold) {
-        counterButton.src = "../images/earthImages/unhealthyEarth.png";
+        counterButton.src = "images/earthImages/unhealthyEarth.png";
     } else {
-        counterButton.src = "../images/earthImages/deadEarth.png";
+        counterButton.src = "images/earthImages/deadEarth.png";
     }
 
     counterButton.style.filter = current.filter;
@@ -153,7 +153,7 @@ function toggle() {
 let storeItems = [
     {
         name: "Throw Meteors",
-        image: "../images/shopImages/meteor.png",
+        image: "images/shopImages/meteor.png",
         defaultPrice: 15,
         price: localStorage.getItem('0Price') ? parseFloat(localStorage.getItem('0Price')) : 15,
         quantity: localStorage.getItem('0Quantity') ? parseInt(localStorage.getItem('0Quantity'), 10) : 0,
@@ -163,7 +163,7 @@ let storeItems = [
     },
     {
         name: "Cut Trees",
-        image: "../images/shopImages/tree.png",
+        image: "images/shopImages/tree.png",
         defaultPrice: 100,
         price: localStorage.getItem('1Price') ? parseFloat(localStorage.getItem('1Price')) : 100,
         quantity: localStorage.getItem('1Quantity') ? parseInt(localStorage.getItem('1Quantity'), 10) : 0,
@@ -173,7 +173,7 @@ let storeItems = [
     },
     {
         name: "Damage The Ozone",
-        image: "../images/shopImages/hairspray.png",
+        image: "images/shopImages/hairspray.png",
         defaultPrice: 1100,
         price: localStorage.getItem('2Price') ? parseFloat(localStorage.getItem('2Price')) : 1100,
         quantity: localStorage.getItem('2Quantity') ? parseInt(localStorage.getItem('2Quantity'), 10) : 0,
@@ -183,7 +183,7 @@ let storeItems = [
     },
     {
         name: "Dump Litter",
-        image: "../images/shopImages/litterItem.png",
+        image: "images/shopImages/litterItem.png",
         defaultPrice: 12000,
         price: localStorage.getItem('3Price') ? parseFloat(localStorage.getItem('3Price')) : 12000,
         quantity: localStorage.getItem('3Quantity') ? parseInt(localStorage.getItem('3Quantity'), 10) : 0,
@@ -193,7 +193,7 @@ let storeItems = [
     },
     {
         name: "Throw Plastic Straws Into The Ocean",
-        image: "../images/shopImages/straw.png",
+        image: "images/shopImages/straw.png",
         defaultPrice: 130000,
         price: localStorage.getItem('4Price') ? parseFloat(localStorage.getItem('4Price')) : 130000,
         quantity: localStorage.getItem('4Quantity') ? parseInt(localStorage.getItem('4Quantity'), 10) : 0,
@@ -203,7 +203,7 @@ let storeItems = [
     },
     {
         name: "Planet Evaporator 9000 [DEBUG ONLY]",
-        image: "../images/shopImages/meteor.png",
+        image: "images/shopImages/meteor.png",
         defaultPrice: 10,
         price: localStorage.getItem('5Price') ? parseFloat(localStorage.getItem('5Price')) : 10,
         quantity: localStorage.getItem('5Quantity') ? parseInt(localStorage.getItem('5Quantity'), 10) : 0,
@@ -216,7 +216,7 @@ let storeItems = [
 let clickUpgrade = [
     {
         name: "Increase Click Power",
-        image: "../images/shopImages/mouse.png",
+        image: "images/shopImages/mouse.png",
         currentUpgrade: localStorage.getItem('clickUpgrade') ? parseFloat(localStorage.getItem('clickUpgrade')) : 0,
         prices: [100, 500, 10000, 100000],
         power: [1, 2, 4, 8]
@@ -396,16 +396,16 @@ const audio = document.getElementById("bgMusic");
 // Upon changing the slider, it changes the icon and volume
 inputSlider.addEventListener("input",(event => {
     if(event.target.value == 0){
-        volumeIcon.src="../images/volumeImages/volume1.png";
+        volumeIcon.src="images/volumeImages/volume1.png";
     }
     else if(event.target.value <= 33){
-        volumeIcon.src="../images/volumeImages/volume2.png";
+        volumeIcon.src="images/volumeImages/volume2.png";
     }
     else if(event.target.value <= 66){
-        volumeIcon.src="../images/volumeImages/volume3.png";
+        volumeIcon.src="images/volumeImages/volume3.png";
     }
     else if(event.target.value <= 100){
-        volumeIcon.src="../images/volumeImages/volume4.png";
+        volumeIcon.src="images/volumeImages/volume4.png";
     }
 
     // Range of [0, 100] * .01 to get a value from [0, 1.0]
@@ -442,21 +442,21 @@ setInterval(updateCPS, 1000);
 var musicVolume = 50;
 function toggleMute(){
     if(inputSlider.value != 0){
-        volumeIcon.src="../images/volumeImages/volume1.png";
+        volumeIcon.src="images/volumeImages/volume1.png";
         musicVolume = inputSlider.value;
         inputSlider.value = 0;
     }
     else{
         if(musicVolume <= 33){
-            volumeIcon.src="../images/volumeImages/volume2.png";
+            volumeIcon.src="images/volumeImages/volume2.png";
             inputSlider.value = musicVolume;
         }
         else if(musicVolume <= 66){
-            volumeIcon.src="../images/volumeImages/volume3.png";
+            volumeIcon.src="images/volumeImages/volume3.png";
             inputSlider.value = musicVolume;
         }
         else if(musicVolume <= 100){
-            volumeIcon.src="../images/volumeImages/volume4.png";
+            volumeIcon.src="images/volumeImages/volume4.png";
             inputSlider.value = musicVolume;
         }
     }
