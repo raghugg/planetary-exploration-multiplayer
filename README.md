@@ -37,15 +37,29 @@ Click power can also be upgraded up to 4 tiers (1 → 2 → 4 → 8 points per c
 - Background music with volume slider and mute toggle
 - Tutorial overlay on first visit
 - Full game reset and item-only reset options
+- Global leaderboard — submit and view top scores powered by a REST API
+
+## 🛠 Stack
+
+- **Frontend:** TypeScript, HTML, CSS — deployed via GitHub Pages
+- **Backend:** Node.js, Express — deployed on AWS EC2
+- **Database:** PostgreSQL
+- **CI/CD:** GitHub Actions — compiles TypeScript and deploys frontend and backend on push
 
 ## 🚀 Running Locally
 
-No build tools required — just open `index.html` in your browser.
-
+**Frontend:**
 ```bash
-git clone https://github.com/raghugg/earth-destroyer
-cd earth-destroyer
+git clone https://github.com/raghugg/planetary-exploration-multiplayer
+cd planetary-exploration-multiplayer
 open index.html
+```
+
+**Backend:**
+```bash
+cd backend
+npm install
+DB_PASSWORD=<your_postgres_password> node server.js
 ```
 
 ## 👥 Authors
