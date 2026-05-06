@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
 const { Pool } = require('pg');
 
 const app = express();
@@ -28,4 +30,9 @@ app.post('/scores', async (req, res) => {
     res.json(result.rows[0]);
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+const sslOptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/api.jobhunters.app/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/api.jobhunters.app/fullchain.pem'),
+};
+
+https.createServer(sslOptions, app).listen(443, () => console.log('Server running on port 443'));

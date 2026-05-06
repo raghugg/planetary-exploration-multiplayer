@@ -466,7 +466,7 @@ function updateCPS(): void {
 // Update CPS every second
 setInterval(updateCPS, 1000);
 
-const API_URL = 'http://18.221.48.47:3000';
+const API_URL = 'https://api.jobhunters.app';
 
 function toggleLeaderboard(): void {
     const panel = document.getElementById('leaderboardContainer') as HTMLElement;
