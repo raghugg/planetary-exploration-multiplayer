@@ -49,6 +49,7 @@
         <div id="bottomSection">
             <img src="images/toggleImages/planets.png" alt="Toggle Planets" style="cursor:pointer" onClick="togglePlanetPanel()">
             <img src="images/toggleImages/shop.png" alt="Toggle Shop" style="cursor:pointer" onClick="toggle()">
+            <button onclick="toggleLeaderboard()">Leaderboard</button>
         </div>
     </div>
 
@@ -74,6 +75,26 @@
         </div>        
         <div id="buttonContainer">
             <button id="resetProgressionButton" class="general-button" role="button">Reset Progression</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Sidebar -->
+    <div class="sidePanel leaderboardContainer" id="leaderboardContainer">
+        <h5>Leaderboard</h5>
+        <div id="leaderboardItemsContainer"></div>
+        <div id="buttonContainer">
+            <button class="general-button" role="button" onclick="openSubmitOverlay()">Submit Score</button>
+        </div>
+    </div>
+
+    <!-- Submit Score Overlay -->
+    <div id="submitOverlay" class="overlay">
+        <div class="overlayContent">
+            <h2>Submit Your Score</h2>
+            <p>Current Score: <span id="submitScoreDisplay"></span></p>
+            <input id="playerNameInput" type="text" placeholder="Enter your name" style="font-size:18px; padding:8px; margin:10px 0; width:100%; box-sizing:border-box;">
+            <br>
+            <button class="general-button" onclick="submitScore()">Submit</button>
         </div>
     </div>
 

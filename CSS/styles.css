@@ -164,6 +164,11 @@ p {
     right: auto;
 }
 
+.leaderboardContainer {
+    left: 0;
+    right: auto;
+}
+
 .storeContainer {
     right: 0;
     left: auto;

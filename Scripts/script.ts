@@ -466,6 +466,53 @@ function updateCPS(): void {
 // Update CPS every second
 setInterval(updateCPS, 1000);
 
+const API_URL = 'http://18.221.48.47:3000';
+
+function toggleLeaderboard(): void {
+    const panel = document.getElementById('leaderboardContainer') as HTMLElement;
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'flex';
+        fetchLeaderboard();
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+async function fetchLeaderboard(): Promise<void> {
+    const container = document.getElementById('leaderboardItemsContainer') as HTMLElement;
+    const response = await fetch(`${API_URL}/leaderboard`);
+    const scores = await response.json();
+    container.innerHTML = '';
+    scores.forEach((entry: { player_name: string; score: number }, index: number) => {
+        const item = document.createElement('div');
+        item.className = 'panelItem';
+        item.innerHTML = `<h3>#${index + 1} ${entry.player_name}</h3><p>${entry.score} points</p>`;
+        container.appendChild(item);
+    });
+}
+
+function openSubmitOverlay(): void {
+    const overlay = document.getElementById('submitOverlay') as HTMLElement;
+    const scoreDisplay = document.getElementById('submitScoreDisplay') as HTMLElement;
+    scoreDisplay.textContent = counter.toFixed(2);
+    overlay.style.display = 'block';
+}
+
+async function submitScore(): Promise<void> {
+    const name = (document.getElementById('playerNameInput') as HTMLInputElement).value;
+    if (!name) return;
+    await fetch(`${API_URL}/scores`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_name: name, score: Math.floor(counter) })
+    });
+    (document.getElementById('submitOverlay') as HTMLElement).style.display = 'none';
+    fetchLeaderboard();
+}
+
+const submitOverlay = document.getElementById('submitOverlay') as HTMLElement;
+submitOverlay.addEventListener('click', () => { submitOverlay.style.display = 'none'; });
+
 var musicVolume: number = 50;
 function toggleMute(): void {
     if(Number(inputSlider.value) != 0){
